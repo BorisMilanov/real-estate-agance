@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+
 const port = 5000;
+require('./config/hbsConfig')(app);
 
 app.get('/', (req, res) => {
-    res.send('test');
+    res.render('test',{layout:false});
 });
 
 app.listen(port, () => {
