@@ -1,9 +1,11 @@
 const express = require('express');
+
 const { PORT } = require('./constants');
+const routes = require('./routes');
+const { initDatabase } = require('./config/database-config')
 
 const app = express();
 
-const routes = require('./routes');
 
 require('./config/express-config')(app);
 require('./config/hbs-config')(app);
@@ -12,6 +14,6 @@ require('./config/hbs-config')(app);
 app.use(routes);
 
 
-app.listen(PORT, () => {
+initDatabase().then(()=>{app.listen(PORT, () => {
     console.log(`The app is running on http://localhost:${PORT}/`)
-});
+});}).catch((err)=>{console.log(err);})
