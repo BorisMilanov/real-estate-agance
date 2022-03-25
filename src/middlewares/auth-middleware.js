@@ -10,7 +10,7 @@ exports.auth = function (req, res, next) {
             res.locals.user = decodedToken;
             next();
         }).catch(error => {
-            res.clearCoolie(AUTH_COOKIE_NAME);
+            res.clearCookie(AUTH_COOKIE_NAME);
             //res.status(401).render('404')
             res.redirect('/auth/login')
         });
