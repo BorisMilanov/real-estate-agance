@@ -11,7 +11,7 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create', async ( req, res) => {
-    await housingService.create(req.body);
+    await housingService.create({...req.body, owner:req.user._id});
 
     res.redirect('/')
 });

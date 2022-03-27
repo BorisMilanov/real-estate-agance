@@ -29,6 +29,10 @@ let housingSchema = new mongoose.Schema({
     aveliablePieces: {
         type: Number,
         required: true
+    },
+    owner: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
     }
 });
 
