@@ -2,8 +2,9 @@ const router = require('express').Router();
 
 const housingService = require('../services/housing-service');
 
-router.get('/aprt-for-recent', (req, res) => {
-    res.render('housing/aprt-for-recent')
+router.get('/aprt-for-recent', async (req, res) => {
+    let housings =await housingService.getAll();
+    res.render('housing/aprt-for-recent',{housings})
 });
 
 router.get('/create', (req, res) => {

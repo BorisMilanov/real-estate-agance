@@ -9,7 +9,7 @@ let housingSchema = new mongoose.Schema({
         type: String,
         enum: ['Apartment', 'Villa', 'House'],
         required: true
-    }, 
+    },
     year: {
         type: Number,
         required: true,
@@ -34,6 +34,8 @@ let housingSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User'
     }
+}, {
+    timestamps: true
 });
 
 let Housing = mongoose.model('Housing', housingSchema);
