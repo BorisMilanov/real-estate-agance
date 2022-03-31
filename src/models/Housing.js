@@ -18,7 +18,7 @@ let housingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    homeImage: {
+    image: {
         type: String,
         required: true
     },
@@ -43,6 +43,10 @@ let housingSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+housingSchema.method('getTenants', function () {
+    return this.tenants.map(x => x.name).join(', ')
+})
 
 let Housing = mongoose.model('Housing', housingSchema);
 
