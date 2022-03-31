@@ -26,7 +26,7 @@ let housingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    aveliablePieces: {
+    availablePieces: {
         type: Number,
         required: true
     },
