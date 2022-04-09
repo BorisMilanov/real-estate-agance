@@ -1,13 +1,14 @@
 const router = require('express').Router();
 
 const authService = require('../services/auth-service');
+const { isGuest, isAuth } = require('../middlewares/auth-middleware');
 const { AUTH_COOKIE_NAME } = require('../constants')
 
-router.get('/login', (req, res) => {
+router.get('/login', isGuest, (req, res) => {
     res.render('auth/login')
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', isGuest, async (req, res) => {
     const { username, password } = req.body;
     try {
         let token = await authService.login({ username, password })
@@ -22,11 +23,11 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.get('/register', (req, res) => {
+router.get('/register', isGuest, (req, res) => {
     res.render('auth/register');
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', isGuest, async (req, res) => {
     let { name, username, password, rePassword } = req.body;
     if (password !== rePassword) {
         res.locals.error = 'Password missmatch';
@@ -34,8 +35,8 @@ router.post('/register', async (req, res) => {
     }
     try {
         await authService.register({ name, username, password, });
-        let token = await authService.login({username, password});
-         
+        let token = await authService.login({ username, password });
+
         res.cookie(AUTH_COOKIE_NAME, token);
         res.redirect('/');
     } catch (err) {
@@ -43,7 +44,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     res.clearCookie(AUTH_COOKIE_NAME);
 
     res.redirect('/');
