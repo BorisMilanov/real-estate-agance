@@ -5,7 +5,7 @@ const housingService = require('../services/housing-service');
 
 router.get('/aprt-for-recent', async (req, res) => {
     let housings = await housingService.getAll();
-    res.render('housing/aprt-for-recent', { housings })
+    res.render('housing/aprt-for-recent', { housings });
 });
 
 router.get('/create', isAuth, (req, res) => {
@@ -13,10 +13,26 @@ router.get('/create', isAuth, (req, res) => {
 });
 
 router.post('/create', isAuth, async (req, res) => {
-    await housingService.create({ ...req.body, owner: req.user._id });
+    try {
+        await housingService.create({ ...req.body, owner: req.user._id });
 
-    res.redirect('/')
+        res.redirect('/housing/aprt-for-recent');
+    }
+    catch (error) {
+        res.render('housing/create', {error: getErrorMessage(error)});
+    }
+
 });
+
+function getErrorMessage(error) {
+    let errorNames = Object.keys(error.errors);
+
+    if (errorNames.length > 0){
+        return error.errors[errorNames[0]];
+    }else{
+         return error.message;
+    }
+}
 
 router.get('/:housingId/details', async (req, res) => {
     let housing = await housingService.getOne(req.params.housingId);
@@ -44,12 +60,12 @@ async function isOwner(req, res, next) {
     }
 }
 
-async function isntOwner(req,res,next){
+async function isntOwner(req, res, next) {
     let housing = await housingService.getOne(req.params.housingId);
 
-    if(housing.owner != req.user._id){
+    if (housing.owner != req.user._id) {
         next();
-    }else{
+    } else {
         res.redirect(`/housing/${req.params.housingId}/details`);
     }
 }
@@ -72,13 +88,13 @@ router.get('/:housingId/delete', isntOwner, async (req, res) => {
     res.redirect('/housing/aprt-for-recent');
 });
 
-router.get('/:housingId/edit',isntOwner, async (req, res) => {
+router.get('/:housingId/edit', isntOwner, async (req, res) => {
     let housing = await housingService.getOne(req.params.housingId);
 
     res.render('housing/edit', { ...housing.toObject() });
 });
 
-router.post('/:housingId/edit',isntOwner, async (req, res) => {
+router.post('/:housingId/edit', isntOwner, async (req, res) => {
     await housingService.updateOne(req.params.housingId, req.body);
 
     res.redirect(`/housing/${req.params.housingId}/details`);
