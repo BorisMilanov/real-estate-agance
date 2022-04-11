@@ -1,3 +1,4 @@
+const { text } = require('express');
 const Housing = require('../models/Housing');
 
 exports.getAll = () => Housing.find().lean();
@@ -11,3 +12,5 @@ exports.getTopHouses = () => Housing.find().sort({ createdAt: -1 }).limit(3).lea
 exports.delete = (housingId) => Housing.findByIdAndDelete(housingId);
 
 exports.updateOne = (housingId, housingData) => Housing.findByIdAndUpdate(housingId, housingData);
+
+exports.search = (text) => Housing.find({ type: { $regex: text, options: 'i' } }).lean()
