@@ -16,7 +16,7 @@ exports.login = async ({ username, password }) => {
     };
 
     let payload = {
-        _id: user.id,
+        _id: user._id,
         name: user.name,
         username: user.username
     };
