@@ -17,6 +17,7 @@ router.post('/login', isGuest, async (req, res) => {
 
         res.redirect('/')
     } catch (err) {
+        res.redirect('/404')
         console.log(err);
         res.end();
     }
