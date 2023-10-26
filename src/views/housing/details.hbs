@@ -27,11 +27,11 @@
                 <!-- if there is no registered user, do not display buttons-->
                 <div class="product-btn">
                     <!-- Only for registered user and creator of the housing offer-->
-                {{#if isOwner}}
+                {{#if user}}
                     <a href="/housing/{{_id}}/edit" class="edit">Edit</a>
                     <a href="/housing/{{_id}}/delete" class="remove">Delete</a>
                     
-                {{else if user}}
+                
                     {{#if isRented}}
                     <!-- logged in user with available pieces-->
                     <p class="alRentHome">You have already rent this home</p>
@@ -42,8 +42,8 @@
                     <!-- logged in user with no available pieces-->
                     <p class="no-housing">No Housing Available!</p>
                     {{/if}}
-                    
-                {{/if}}
+                    {{/if}}
+               
                 </div>
             </div>
         </div>
